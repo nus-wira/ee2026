@@ -27,16 +27,13 @@ module seven_bit(
     output COUT
     );
     
-    wire [6:0] B_1s, B_2s;
+    wire [6:0] B_1s;
     wire C0_MSB, CARRY_L_2s, CARRY_M_2s;
     
     assign B_1s = ~B;
-    // Convert B to 2's complement
-    five_bit pa0 (B_1s[4:0], 5'b00001, 0, B_2s[4:0], CARRY_L_2s);
-    two_bit pa1 (B_1s[6:5], 2'b00, CARRY_L_2s, B_2s[6:5], CARRY_M_2s);
     
-    // Add A LSB and B LSB
-    five_bit lsb (A[4:0], B_2s[4:0], 0, S[4:0], C0_MSB);
+    // Add A LSB and B LSB + Carry for 2's complement
+    five_bit lsb (A[4:0], B_1s[4:0], 1, S[4:0], C0_MSB);
     // Add A MSB and B MSB, with carry from LSB
-    two_bit msb (A[6:5], B_2s[6:5], C0_MSB, S[6:5], COUT);
+    two_bit msb (A[6:5], B_1s[6:5], C0_MSB, S[6:5], COUT);
 endmodule

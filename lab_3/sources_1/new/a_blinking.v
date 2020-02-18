@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 02/09/2020 07:55:56 PM
+// Create Date: 02/17/2020 12:38:03 AM
 // Design Name: 
-// Module Name: test_blinky
+// Module Name: a_blinking
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -19,19 +19,19 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+// Matric No. A0149286R
+// Task A: 3rd last no. - 2
+// LD 2+6 = 8
 
-module test_blinky(
-
+module a_blinking(
+    input CLOCK,
+    output reg LD8 = 0
     );
-    reg CLOCK; wire LED;
     
-    blinky dut(CLOCK, LED);
+    reg [23:0] COUNT  = 24'b0; // 3 Hz
     
-    initial begin
-        CLOCK = 0;
-    end
-    
-    always begin
-        #5 CLOCK = ~CLOCK;
+    always @ (posedge CLOCK) begin
+        COUNT <= COUNT + 1;
+        LD8 <= (COUNT == 24'b0) ? ~LD8 : LD8;
     end
 endmodule

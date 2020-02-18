@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 02/09/2020 11:52:56 PM
+// Create Date: 02/17/2020 07:46:57 PM
 // Design Name: 
-// Module Name: test_slow_blinky
+// Module Name: c1_med
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,20 +20,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module test_slow_blinky(
-
+module c1_med(
+    input CLOCK,
+    output reg MEDCLK = 0
     );
-    reg CLOCK, SWITCH;
-    wire LED;
+    // outputs 1.5 Hz
+    // 1.5 Hz: 100^6 / 2^(25+1)
+    reg [24:0] COUNT = 25'b0;
     
-    slow_blinky dut(CLOCK, SWITCH, LED);
-    initial begin
-        CLOCK = 0;
-        SWITCH = 0; #200
-        SWITCH = 1;
-    end
-        
-    always begin
-        #5 CLOCK = ~CLOCK;
+    always @ (posedge CLOCK) begin
+        COUNT <= COUNT + 1;
+        MEDCLK <= (COUNT == 0) ? ~MEDCLK : MEDCLK;
     end
 endmodule

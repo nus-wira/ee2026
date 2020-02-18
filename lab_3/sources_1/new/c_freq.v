@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 02/09/2020 07:49:07 PM
+// Create Date: 02/17/2020 04:24:59 PM
 // Design Name: 
-// Module Name: my_2_to_1_mux
+// Module Name: c_freq
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,12 +20,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module my_2_to_1_mux(
-    input A,
-    input B,
-    input S,
-    output Z
+module c_freq(
+    input SW0,
+    input SW1,
+    input SW2,
+    input SLOWCLK,
+    input MEDCLK,
+    input FASTCLK,
+    output CURRCLK
     );
     
-    assign Z = S ? B : A; // assign B to Z if S = 1, else assign A to Z
+    assign CURRCLK = SW2 ? FASTCLK : (SW1 ? MEDCLK : (SW0 ? SLOWCLK : MEDCLK));
 endmodule

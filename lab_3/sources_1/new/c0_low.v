@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 02/09/2020 11:51:10 PM
+// Create Date: 02/17/2020 04:43:22 PM
 // Design Name: 
-// Module Name: slow_blinky
+// Module Name: c0_low
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,19 +20,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module slow_blinky(
-    input CLOCK, SWITCH,
-    output LED
+module c0_low(
+    input CLOCK,
+    output reg SLOWCLK = 0
     );
-    
-    reg [5:0] COUNT = 6'b000000;
-    reg LED = 0;
-    wire CHECK;
-    
-    
+    // outputs 0.37 Hz
+    // 0.37 Hz: 100^6 / 2^(27+1)
+    reg [26:0] COUNT = 27'b0;
     
     always @ (posedge CLOCK) begin
         COUNT <= COUNT + 1;
-        LED <= ( COUNT == CHECK ) ? ~LED : LED;
+        SLOWCLK <= (COUNT == 0) ? ~SLOWCLK : SLOWCLK;
     end
 endmodule

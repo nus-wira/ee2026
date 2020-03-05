@@ -29,34 +29,32 @@ module main(
     output dp,
     output [10:0] led
     );
-    wire a_done, b_done, LOA;
-    wire [1:0] flag;
-    assign dp = 1;
+    // Flags for activation / LOA / ANTINE / finish
+    wire a_done, LOA, E, ANTINE, ALLDONE; 
+    wire [2:0] flag; // Flag used in multiplexer
+    
+    // To display 7segs
     wire [3:0] an_a, an_d, an_e;
     wire [6:0] seg_a, seg_d, seg_e;
-    wire dp_a, dp_d;
-    wire [10:0] led_b, led_c;
-    wire E,QUAR;
-    assign E = (sw == 16'b0000000000011111);
-    a_activation a0(E, an_a, seg_a, led_b, a_done);
-    c_countdown c0(a_done, CLOCK, led_c, LOA);
-    d_loa d0 (CLOCK, LOA, an_d, seg_d);
-    e_quar e0 (CLOCK, LOA, btnC, btnU, btnD, btnR, btnL, an_e, seg_e, QUAR);
-
-    assign flag = a_done ? (LOA ? (QUAR ? 2'd3 : 2'd2) : 2'd1) : 0;
-//    a_activation a0 (E, an_a, seg_a, dp_a, a_done);
-//    b_trail b0 (led_b);
-//    c_countdown c0 (CLOCK, a_done, led_c, LOA);
-//    d_loa d0(CLOCK, LOA, an_d, seg_d, dp_d);
-    multiplexer mul0 (flag, an_a, an_d, an_e, seg_a, seg_d, seg_e, 
-                      led_b, led_c, an, seg,led);
-
-//    a_activation a0 (sw, an_a, seg_a, dp_a, a_done);
-//    b_trail b0 (a_done, led_b, b_done);
-//    c_countdown c0 (CLOCK, b_done, led_c, LOA);
-//    d_loa d0 (CLOCK, LOA, an_d, seg_d, dp_d);
-//    multiplexer mul0 (a_done, b_done, LOA, an_a, an_d, seg_a, seg_d, dp_a, dp_d, 
-//                      led_b, led_c, an, seg, dp, led);
+    wire [10:0] led_b, led_c, led_e;
     
+    assign dp = 1; // dp never on
+    assign E = (sw == 16'b0000000000011111); // enable activation
+    
+    // Activation & Trail
+    a_activation a0(E, an_a, seg_a, led_b, a_done);
+    // Countdown
+    c_countdown c0(a_done, CLOCK, led_c, LOA);
+    // LOA
+    d_loa d0 (CLOCK, LOA, an_d, seg_d);
+    // QUAR(TZ) (ANTINE)
+    e_quar e0 (CLOCK, LOA, btnC, btnU, btnD, btnR, btnL, an_e, seg_e, led_e, ANTINE,ALLDONE);
+    
+    // Flag to determine which subtask to display
+    assign flag = ALLDONE ? 3'd4 : (a_done ? (LOA ? (ANTINE ? 3'd3 : 3'd2) : 3'd1) : 0);
+    
+    // To display to output board using flag
+    multiplexer mul0 (flag, an_a, an_d, an_e, seg_a, seg_d, seg_e, 
+                      led_b, led_c, led_e, an, seg,led);
 
 endmodule

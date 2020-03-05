@@ -19,14 +19,19 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+// resetQUAR = 1 at end of countdown -> QUAR = 1 -> resetFLAG = 1 -> resetQUAR = 0 
+// -> QUAR = 1 if btnC -> resetFLAG = 0 -> resetQUAR = 1 at end of countdown
 module set_quartz(
-    input SLOWCLOCK,
-    input PULC,
-    input pass,
-    output reg QUARTZ = 0
+    input SLOWCLOCK, PULC, pass, resetQUAR,
+    output reg QUARTZ = 0, resetFLAG = 0
     );
     always @ (posedge SLOWCLOCK) begin
-        QUARTZ <= QUARTZ ? QUARTZ : (pass && PULC);
+        if (resetQUAR) begin
+            QUARTZ <= 0;
+            resetFLAG <= 1;
+        end else begin
+            QUARTZ <= QUARTZ ? QUARTZ : (pass && PULC);
+            resetFLAG <= 0;
+        end
     end
 endmodule

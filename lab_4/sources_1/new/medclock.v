@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/02/2020 02:31:55 PM
+// Create Date: 03/05/2020 05:31:23 PM
 // Design Name: 
-// Module Name: b_trail
+// Module Name: medclock
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -19,9 +19,16 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-// Turn on LED Trail
-module b_trail(
-    output  [10:0] led
+
+module medclock(
+    input CLOCK,
+    output reg MEDCLK = 0
     );
-    assign led = ~11'b0;
+    // 6 Hz
+    reg [22:0] COUNT = 0;
+    
+    always @ (posedge CLOCK) begin
+        COUNT <= COUNT + 1;
+        MEDCLK <= (COUNT == 0) ? ~MEDCLK : MEDCLK;
+    end
 endmodule

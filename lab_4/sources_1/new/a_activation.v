@@ -24,7 +24,6 @@ module a_activation(
     input E,
     output reg [3:0] an,
     output reg [6:0] seg,
-//    output reg dp,
     output reg [10:0] led,
     output reg done
     );
@@ -32,14 +31,12 @@ module a_activation(
         done = 0;
         an = ~4'b0;
         seg = ~7'b0;
-//        dp = 1;
         led = 0;
     end
     always @ (*) begin
         if (E) begin
             an = 4'b0;
             seg = 7'b1110110;
-//            dp = 1;
             led = ~11'b0;
             done = 1;
         end

@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/02/2020 02:40:46 PM
+// Create Date: 03/05/2020 09:40:57 PM
 // Design Name: 
-// Module Name: c_countdown
+// Module Name: c_countdown_ant
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module c_countdown(
-    input a_done, CLOCK, 
+module c_countdown_ant(
+    input QUAR, CLOCK, resetFLAG,
     output reg [10:0] led = 0,
-    output reg LOA = 0
+    output reg LOA = 0, resetQUAR = 0
     );
     
     reg [3:0] count = 0;
@@ -31,8 +31,12 @@ module c_countdown(
     slowclock c0(CLOCK, SLOWCLK);
     
     always @ (posedge SLOWCLK) begin
-        if (a_done) begin
-            count <= (count == 4'd12) ? count : count + 1;
+        // resetQUAR = 1 at end of countdown -> QUAR = 1 -> resetFLAG = 1 -> resetQUAR = 0 
+        // -> QUAR = 1 if btnC -> resetFLAG = 0 -> resetQUAR = 1 at end of countdown
+        resetQUAR <= resetFLAG ? 0 : resetQUAR;
+        if (QUAR) begin
+            LOA <= 1;
+            count <= (count == 4'd11) ? 0 : count + 1;
             case (count)
             4'd0: led <= ~11'b0;
             4'd1: led[10] <= 0;
@@ -48,12 +52,11 @@ module c_countdown(
             4'd11:
                 begin
                     led[0] <= 0;
-                    LOA <= 1;
+                    LOA <= 0;
+                    resetQUAR <= 1;
                 end
             default: led <= 0;
             endcase
         end
     end   
-
-        
 endmodule

@@ -28,8 +28,8 @@ module d_loa(
     wire slowclk,fastclk, CURRCLK;
     reg [1:0] count;
     reg [2:0] start;
-    slowerclock s0(CLOCK, slowclk);
-    fastclock s1(CLOCK, fastclk);
+    slowerclock s0(CLOCK, slowclk); // 2.34s, 0.37Hz clock
+    fastclock s1(CLOCK, fastclk); // 381 Hz clock
     
     initial begin
         an = 4'b0;

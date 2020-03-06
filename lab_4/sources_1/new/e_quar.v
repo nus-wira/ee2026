@@ -25,7 +25,7 @@ module e_quar(
     input btnC, btnU,btnD,btnR,btnL,
     output reg [3:0] an,
     output reg [6:0] seg,
-    output [10:0] led,
+    output [15:0] led,
     output ANTINE, ALLDONE
     );
     
@@ -75,8 +75,12 @@ module e_quar(
     
     always @ (posedge clkR) begin
         // Use bitshifting to set AP
-        ptr <= (PULR && !ptr[0]) ? ptr >> 1 :
-               (PULL && !ptr[3]) ? ptr << 1 : ptr;
+        if (resetQUAR) begin
+            ptr <= 4'b0001; // reset AP to 0
+        end else begin
+            ptr <= (PULR && !ptr[0]) ? ptr >> 1 :
+                   (PULL && !ptr[3]) ? ptr << 1 : ptr;
+        end
     end
     
     // Display 4 different letters by using 381 Hz clock to switch

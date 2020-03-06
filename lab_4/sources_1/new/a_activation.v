@@ -19,12 +19,13 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+// Rightmost number = 6 -> lines at top and bottom
 // Turn on activation
 module a_activation(
     input E,
     output reg [3:0] an,
     output reg [6:0] seg,
-    output reg [10:0] led,
+    output reg [15:0] led,
     output reg done
     );
     initial begin
@@ -37,7 +38,7 @@ module a_activation(
         if (E) begin
             an = 4'b0;
             seg = 7'b1110110;
-            led = ~11'b0;
+            led = 16'h7fff;
             done = 1;
         end
     end

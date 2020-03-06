@@ -27,7 +27,7 @@ module main(
     output [3:0] an,
     output [6:0] seg,
     output dp,
-    output [10:0] led
+    output [15:0] led
     );
     // Flags for activation / LOA / ANTINE / finish
     wire a_done, LOA, E, ANTINE, ALLDONE; 
@@ -36,10 +36,10 @@ module main(
     // To display 7segs
     wire [3:0] an_a, an_d, an_e;
     wire [6:0] seg_a, seg_d, seg_e;
-    wire [10:0] led_b, led_c, led_e;
+    wire [15:0] led_b, led_c, led_e;
     
     assign dp = 1; // dp never on
-    assign E = (sw == 16'b0000000000011111); // enable activation
+    assign E = (sw == 16'h001f); // enable activation
     
     // Activation & Trail
     a_activation a0(E, an_a, seg_a, led_b, a_done);

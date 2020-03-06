@@ -24,10 +24,10 @@ module multiplexer(
     input [2:0] flag,
     input [3:0] an_a, an_d, an_e,
     input [6:0] seg_a, seg_d, seg_e,
-    input [10:0] led_b, led_c, led_e,
+    input [15:0] led_b, led_c, led_e,
     output  reg [3:0] an, 
     output  reg [6:0] seg,
-    output reg [10:0] led
+    output reg [15:0] led
     );
     
     initial begin
@@ -55,11 +55,17 @@ module multiplexer(
                 seg = seg_d;
                 led = 0;
             end
-        3'd3,3'd4: // QUAR(TZ)(ANTINE)
+        3'd3: // QUAR(TZ)(ANTINE)
             begin
                 an = an_e;
                 seg = seg_e;
                 led = led_e;
+            end
+        3'd4: // DONE
+            begin
+                an = an_e;
+                seg = seg_e;
+                led = 0;
             end
         default:
             begin

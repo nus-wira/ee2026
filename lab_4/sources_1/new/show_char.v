@@ -22,13 +22,14 @@
 
 module show_char(
     input SLOWCLK, MEDCLK, PULU, PULD, ptr, resetQUAR,
-    output reg [6:0] seg,
-    output reg [3:0] char = 4'd10
+    output reg [6:0] seg
     );
     
     reg [6:0] segtog; // To toggle seg when AP active
+    reg [3:0] char; // To keep track of current digit to show
     initial begin
         segtog = 7'b0;
+        char = 4'd10;
         seg = 7'b0110110;
     end
     
@@ -55,7 +56,6 @@ module show_char(
             4'd8: seg <= segtog | 7'b0;
             4'd9: seg <= segtog | 7'b0010000;
             4'd11: char <= 4'd0;
-            4'd15: char <= 4'd10;
             default: seg <= segtog | 7'b0110110;
             endcase
         end else begin
@@ -72,7 +72,6 @@ module show_char(
             4'd8: seg <= 7'b0;
             4'd9: seg <= 7'b0010000;
             4'd11: char <= 4'd0;
-            4'd15: char <= 4'd10;
             default: seg <= 7'b0110110;
             endcase
          end

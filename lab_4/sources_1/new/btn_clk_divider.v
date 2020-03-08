@@ -24,12 +24,13 @@ module btn_clk_divider(
     input clock,
     output reg slowclk = 0
     );
-    //3 Hz
-    //reg [23:0] count = 0;
-    //12 Hz
-    // reg [21:0] count = 0;
+
     //25 MHz
-    reg count = 0;
+    //reg count = 0;
+    //12.5 MHz
+    reg [1:0] count = 0;
+    //6.25 MHz
+    //reg [2:0] count = 0;
     
     always @ (posedge clock) begin
         count <= count + 1;

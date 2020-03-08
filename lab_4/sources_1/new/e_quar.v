@@ -39,7 +39,6 @@ module e_quar(
     // char on display
     wire [6:0] seg0, seg1, seg2, seg3; // To be displayed by board
     wire [6:0] segq0, segq1, segq2, segq3; // To store intermediate segments from pressing buttons
-    wire [3:0] char0, char1, char2, char3; // To store current char for each segment
     
     // Get button presses
     single_pulse_debounce s0(CLOCK, btnC, clkC, PULC);
@@ -58,10 +57,10 @@ module e_quar(
     c_countdown_ant cd0(QUAR, CLOCK, resetFLAG, led, ANTINE, resetQUAR);
     
     // Get segment char for each segment
-    show_char p0(clkU, MEDCLK, PULU, PULD, ptr[0], resetQUAR, segq0, char0);
-    show_char p1(clkU, MEDCLK, PULU, PULD, ptr[1], resetQUAR,segq1, char1);
-    show_char p2(clkU, MEDCLK, PULU, PULD, ptr[2], resetQUAR,segq2, char2);
-    show_char p3(clkU, MEDCLK, PULU, PULD, ptr[3], resetQUAR,segq3, char3);
+    show_char p0(clkU, MEDCLK, PULU, PULD, ptr[0], resetQUAR, segq0);
+    show_char p1(clkU, MEDCLK, PULU, PULD, ptr[1], resetQUAR,segq1);
+    show_char p2(clkU, MEDCLK, PULU, PULD, ptr[2], resetQUAR,segq2);
+    show_char p3(clkU, MEDCLK, PULU, PULD, ptr[3], resetQUAR,segq3);
 
     // Set QUARTZ mode when pass is correct, and finish
     name n0(clkC, PULC, segq0, segq1, segq2, segq3,
